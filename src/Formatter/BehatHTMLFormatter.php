@@ -469,11 +469,7 @@ class BehatHTMLFormatter implements Formatter {
         $scenario->setTags($event->getScenario()->getTags());
         $scenario->setLine($event->getScenario()->getLine());
         $scenario->setScreenshotName($event->getScenario()->getTitle());
-        $scenario->setScreenshotPath(
-            'assets/screenshots/' .
-            preg_replace('/\W/', '', $event->getFeature()->getTitle()) . '/'.
-            preg_replace('/\W/', '', $event->getScenario()->getTitle()) . '.png'
-        );
+
         $this->currentScenario = $scenario;
 
         $print = $this->renderer->renderBeforeScenario($this);
@@ -496,6 +492,15 @@ class BehatHTMLFormatter implements Formatter {
             $this->currentFeature->addPendingScenario();
             $this->currentScenario->setPending(true);
         } else {
+             $screenshotPath =
+                'assets/screenshots/' .
+                $this->currentFeature->getScreenshotFolder() . '/' .
+                $this->currentScenario->getScreenshotName();
+
+            if (file_exists($this->getOutputPath() . '/' . $screenshotPath)) {
+                $this->currentScenario->setScreenshotPath($screenshotPath);
+            }
+            
             $this->failedScenarios[] = $this->currentScenario;
             $this->currentFeature->addFailedScenario();
             $this->currentScenario->setPassed(false);
