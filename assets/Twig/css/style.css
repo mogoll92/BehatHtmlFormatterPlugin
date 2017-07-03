@@ -167,3 +167,6 @@ body {
   padding: 1px;
   background-color: #808080;
 }
+.pull-right {
+  float: initial!important;
+}
