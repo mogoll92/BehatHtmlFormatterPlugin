@@ -585,7 +585,10 @@ class BehatHTMLFormatter implements Formatter {
         if ($event->getStep()->hasArguments()){
             $object = $this->getObject($event->getStep()->getArguments());
             $step->setArgumentType($object->getNodeType());
-            $step->setArguments($object);
+            if ($step->getArgumentType() == 'PyString') {
+                $step->setArguments($object->getStrings());
+            } else
+                $step->setArguments($object);
         }
 
         //What is the result of this step ?
