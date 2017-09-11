@@ -195,7 +195,11 @@
                                                 <b>{{ step.keyword }}</b> {{ step.text }}
                                                 {% if printStepArgs is not null %}
                                                     {% for argument in step.arguments %}
-                                                        <p style="padding-left:0.5em; overflow-x:scroll; white-space:nowrap; font-family:monospace">|{% for subarg in argument %} {{ subarg | nl2br}} | {% endfor %}</p>
+                                                        {% if step.argumentType == "PyString" %}
+                                                            <p style="padding-left:0.5em; white-space:nowrap; font-family:monospace">{{ argument|raw }}</p>
+                                                        {% else %}
+                                                            <p style="padding-left:0.5em; overflow-x:scroll; white-space:nowrap; font-family:monospace">|{% for subarg in argument %} {{ subarg | nl2br}} | {% endfor %}</p>
+                                                        {% endif %}
                                                     {% endfor %}
                                                 {% endif %}
                                                 {% if step.exception is not null %}
